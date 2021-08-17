@@ -1,46 +1,15 @@
 #To mimic the functionalities of main.c in ../device-app-boilerplate
 from _my_coco import lib, ffi
-#import device_callback as dc
+
+import sys
+sys.path.append('/mnt/host/tmp/workspace/cocosdk/pycoco-framework/src')
+
+import coco_client
 import device_declarations as dd
-import numpy as np
 import time
 
-#Parse Cmdline from main.c
+ret_val = lib.coco_device_init(coco_client.DeviceInitParams.device_init_params)
 
-app_config = ffi.new("cmdline_params_t *")
-app_config_cwd = ffi.new("char[]", "/mnt/host/tmp/workspace/cocosdk/cocodevicesdk/examples/c/device-app-boilerplate/build_cwd/is-2".encode('ascii'))
-app_config_config_file_path = ffi.new("char[]", "/mnt/host/tmp/workspace/cocosdk/cocodevicesdk/examples/c/device-app-boilerplate/build_cwd/is-2/configpython.txt".encode('ascii'))
-app_config_temp_path = ffi.new("char[]", "/tmp".encode('ascii'))
-app_config.cwd = app_config_cwd
-app_config.configFilePath = app_config_config_file_path
-app_config.tempPath = app_config_temp_path
-
-
-#Device Initialization through COCO device SDK
-
-device_init_params = ffi.new("coco_device_init_params_t *")
-device_init_params.cwdPath = app_config.cwd
-device_init_params.configFilePath = app_config_config_file_path
-device_init_params.downloadPath = app_config.cwd
-
-
-#callbacks = [dc.coco_device_join_nw_status_cb, dc.coco_device_add_res_status_cb, dc.coco_device_attribute_update_status, dc.coco_device_data_corruption_cb]
-#device_init_params.coconetConnStatusCb = ffi.new_handle(callbacks[0])
-#device_init_params.addResStatusCb = ffi.new_handle(callbacks[1])
-#device_init_params.attributeUpdateCb = ffi.new_handle(callbacks[2])
-#device_init_params.dataCorruptionCb = ffi.new_handle(callbacks[3])
-#device_init_params.resourceCmdCb = ffi.new_handle(callbacks[4])
-
-firmware_version = ffi.new("char[]", "1.0.0".encode('ascii'))
-device_init_params.firmwareVersion = firmware_version
-device_init_params.isExtendable = True
-device_init_params.powerSource = 4 #COCO_STD_POWER_SRC_BATTERY
-device_init_params.receiverType = 0 #COCO_STD_RCVR_TYPE_RX_ON_WHEN_IDLE
-device_init_params.skipSSLVerification = 1
-device_init_params.tempPath = app_config.tempPath
-
-ret_val = 0
-ret_val = lib.coco_device_init(device_init_params)
 if (-1 == ret_val):
     print("App: coco_device_init failed\n")
     exit(1)
