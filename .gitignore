@@ -1,6 +1,7 @@
 __pycache__/
 
 test/
+examples/_my_coco.c
 
 ### C ###
 # Prerequisites
