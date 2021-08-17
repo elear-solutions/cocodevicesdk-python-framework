@@ -2,9 +2,10 @@ __pycache__/
 
 test/
 
-_my_coco.c
-_my_coco.o
-_my_coco.cpython-38-x86_64-linux-gnu.so
+examples/*.c
+examples/*.o
+examples/*.so
+examples/*.h
 
 ### C ###
 # Prerequisites
