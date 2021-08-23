@@ -21,7 +21,7 @@ class DeviceInitParams:
     device_init_params.firmwareVersion = firmware_version
     device_init_params.isExtendable = True
     device_init_params.powerSource = 4 #COCO_STD_POWER_SRC_BATTERY
-    device_init_params.receiverType = 0 #COCO_STD_RCVR_TYPE_RX_ON_WHEN_IDLE
+    device_init_params.receiverType = 0 #COCO_STD_RCVR_TYPE_RX_ON_WHEN_IDLEz
     device_init_params.skipSSLVerification = 1
     device_init_params.tempPath = app_config_temp_path
 
