@@ -4,36 +4,39 @@ import time
 
 #Initializes the cocoDevice
 class CocoDeviceInitializer:
+    instance = None
     def __init__(self, cwd, config_path, version, temp_path):
         #Under the hood FFI layer
-        self.cwd_path = ffi.new("char[]", cwd.encode('ascii'))
-        self.config_path = ffi.new("char[]", config_path.encode('ascii'))
-        self.firmware_version = ffi.new("char[]", version.encode('ascii'))
-        self.temp_path = ffi.new("char[]", temp_path.encode('ascii'))
+        self.cwd_path = ffi.new("char[]", "{}".format(cwd).encode('ascii'))
+        self.config_path = ffi.new("char[]", "{}".format(config_path).encode('ascii'))
+        self.firmware_version = ffi.new("char[]", "{}".format(version).encode('ascii'))
+        self.temp_path = ffi.new("char[]", "{}".format(temp_path).encode('ascii'))
 
     def device_init(self):
-        device_init_params = ffi.new("coco_device_init_params_t *")
-        device_init_params.cwdPath = self.cwd_path
-        device_init_params.configFilePath = self.config_path
-        device_init_params.downloadPath = self.cwd_path
-        device_init_params.firmwareVersion = self.firmware_version
-        device_init_params.isExtendable = True
-        device_init_params.powerSource = 4 
-        device_init_params.receiverType = 0 
-        device_init_params.skipSSLVerification = 1
-        device_init_params.tempPath = self.temp_path
+        if CocoDeviceInitializer.instance == None:
+            device_init_params = ffi.new("coco_device_init_params_t *")
+            device_init_params.cwdPath = self.cwd_path
+            device_init_params.configFilePath = self.config_path
+            device_init_params.downloadPath = self.cwd_path
+            device_init_params.firmwareVersion = self.firmware_version
+            device_init_params.isExtendable = True
+            device_init_params.powerSource = 4 
+            device_init_params.receiverType = 0 
+            device_init_params.skipSSLVerification = 1
+            device_init_params.tempPath = self.temp_path
 
-        ret_val = lib.coco_device_init(device_init_params)
-        if (-1 == ret_val):
-            print("App: coco_device_init failed\n")
-            exit(1)
-        if (0 == ret_val):
-            while(-1 == lib.coco_device_init_auth()):
-                print("app: will try re-auth in 3 seconds")
-                time.sleep(3)
+            ret_val = lib.coco_device_init(device_init_params)
+            if (-1 == ret_val):
+                print("App: coco_device_init failed\n")
+                exit(1)
+            if (0 == ret_val):
+                while(-1 == lib.coco_device_init_auth()):
+                    print("app: will try re-auth in 3 seconds")
+                    time.sleep(3)
+            CocoDeviceInitializer.instance = CocoDeviceInitializer(self.cwd_path, self.config_path, self.firmware_version, self.temp_path)
         else:
-            print("Device has already been initialized")
-            return
+            print("Device is already initialized")
+            return CocoDeviceInitializer.instance
 
 #Ensures cocodevice is a singleton
 class Singleton(CocoDeviceInitializer):
@@ -57,9 +60,5 @@ if __name__ == "__main__":
                                     "/mnt/host/tmp/workspace/cocosdk/cocodevicesdk/examples/c/device-app-boilerplate/build_cwd/is-2/configpython.txt",
                                      "1.0.0",
                                     "/tmp")
-    print(my_device.temp_path)
-    print(another_device.temp_path)
-    print("\n")
     print(my_device.temp_path == another_device.temp_path)
-    print("\n")
     my_device.device_init()
