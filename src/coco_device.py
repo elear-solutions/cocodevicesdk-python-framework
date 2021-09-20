@@ -38,25 +38,22 @@ class CocoDevice:
             CocoDevice.instance = CocoDevice(self.cwd_path, self.config_path, self.firmware_version, self.temp_path)
         else:
             print("Device is already initialized")
-            return CocoDevice.instance
+        return CocoDevice.instance
 
 #Main testing
 if __name__ == "__main__":
     callbacks = [dc.coco_device_join_nw_status_cb, dc.coco_device_add_res_status_cb, dc.coco_device_attribute_update_status, dc.coco_device_data_corruption_cb, dc.coco_device_resource_cmd_cb]
-    my_device = CocoDevice("/mnt/host/tmp/workspace/cocosdk/cocodevicesdk/examples/c/device-app-boilerplate/build_cwd/is-2",
+    my_device_initializer = CocoDevice("/mnt/host/tmp/workspace/cocosdk/cocodevicesdk/examples/c/device-app-boilerplate/build_cwd/is-2",
                                     "/mnt/host/tmp/workspace/cocosdk/cocodevicesdk/examples/c/device-app-boilerplate/build_cwd/is-2/configpython.txt",
                                      "1.0.0",
                                     "/tmp")
-    my_device.device_init()
-    another_device = CocoDevice("/mnt/host/tmp/workspace/cocosdk/cocodevicesdk/examples/c/device-app-boilerplate/build_cwd/is-2",
+    my_device = my_device_initializer.device_init()
+    another_device_initializer = CocoDevice("/mnt/host/tmp/workspace/cocosdk/cocodevicesdk/examples/c/device-app-boilerplate/build_cwd/is-2",
                                     "/mnt/host/tmp/workspace/cocosdk/cocodevicesdk/examples/c/device-app-boilerplate/build_cwd/is-2/configpython.txt",
                                      "1.0.0",
                                     "/tmp")
-    another_device.device_init()
-    print("\n\n\n\n")
-    print(my_device.instance == another_device.instance)
-    if my_device.instance != another_device.instance:
+    another_device = another_device_initializer.device_init()
+    if my_device != another_device:
         exit(1)
-    print("\n\n\n\n")
     while 1:
         time.sleep(5)
