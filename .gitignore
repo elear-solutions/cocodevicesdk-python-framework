@@ -2,6 +2,10 @@ __pycache__/
 
 test/
 
+src/*.c
+src/*.o
+src/*.so
+
 examples/*.c
 examples/*.o
 examples/*.so
