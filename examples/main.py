@@ -8,7 +8,7 @@ import coco_client
 import device_declarations as dd
 import time
 
-ret_val = lib.coco_device_init(coco_client.DeviceInitParams.device_init_params)
+ret_val = lib.coco_device_init(coco_client.DeviceInitParams.device_init_params) ####Remove this stuff because the class now gets intiailzied
 
 if (-1 == ret_val):
     print("App: coco_device_init failed\n")
@@ -43,7 +43,7 @@ resource_info.resourceSummaryInfo = dd.ResourceInfo.resource_cmd
 resource_info.capabilityArrCount = 5
 resource_info.capabilityArr = capability_arr
 
-#Main funcitno
+#Main function
 def main():
     if (-1 == lib.coco_device_add_resource(resource_info, 1, 0, 0, ffi.NULL)):
         print("App: Add resource failed\n")
