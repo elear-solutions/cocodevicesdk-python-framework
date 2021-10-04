@@ -43,7 +43,7 @@ resource_info.resourceSummaryInfo = dd.ResourceInfo.resource_cmd
 resource_info.capabilityArrCount = 5
 resource_info.capabilityArr = capability_arr
 
-#Main funcitno
+#Main function
 def main():
     if (-1 == lib.coco_device_add_resource(resource_info, 1, 0, 0, ffi.NULL)):
         print("App: Add resource failed\n")

@@ -53,6 +53,7 @@ if __name__ == "__main__":
                                      "1.0.0",
                                     "/tmp")
     another_device = another_device_initializer.device_init()
+    #Ensures that the two created devices are the same... singleton
     if my_device != another_device:
         exit(1)
     while 1:
